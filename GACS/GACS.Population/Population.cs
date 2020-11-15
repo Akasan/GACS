@@ -1,10 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
+using GACS.GACS.Gene;
 
 
-namespace GACS
+namespace GACS.GACS.Population
 {
     public class Indivisual {
+        public dynamic Gene;
+
+        public Indivisual(int populationSize, int geneLength, GeneList gene)
+        {
+            switch (gene)
+            {
+                case GACS.Gene.GeneList.FixedBinaryGene:
+                    Gene = new FixedBinaryGenes(populationSize, geneLength);
+                    break;
+            }
+        }
     }
 
     public class Population
@@ -12,18 +24,18 @@ namespace GACS
         public int PopulationSize;
         public List<Indivisual> Indivisual;
 
-        public Population(int populationSize)
+        public Population(int populationSize, GeneList gene)
         {
             PopulationSize = populationSize;
-            InitializePopulation();
+            InitializePopulation(gene);
         }
 
-        private void InitializePopulation()
+        private void InitializePopulation(GeneList gene)
         {
             this.Indivisual = new List<Indivisual>();
             for (int i=0; i< PopulationSize; i++)
             {
-                this.Indivisual.Add(new Indivisual());
+                this.Indivisual.Add(new Indivisual(PopulationSize, 10, gene));
             }
         }
 

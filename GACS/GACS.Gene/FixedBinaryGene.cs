@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 
-namespace GACS
+namespace GACS.GACS.Gene
 {
     /// <summary>
     /// Method list for FixedBinaryGene
@@ -30,6 +30,19 @@ namespace GACS
         {
             Length = length;
             InitializeGenes(initializeMethod);
+        }
+
+        public FixedBinaryGene(List<bool> gene1, List<bool> gene2)
+        {
+            Length = gene1.Count + gene2.Count;
+            Gene = gene1;
+            Gene.AddRange(gene2);
+        }
+
+        public FixedBinaryGene(List<bool> gene)
+        {
+            Length = gene.Count;
+            Gene = gene;
         }
 
         /// <summary>
@@ -85,12 +98,23 @@ namespace GACS
         }
 
         /// <summary>
+        /// Get genes as range
+        /// </summary>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <returns></returns>
+        public List<bool> GetFromTo(int from, int to)
+        {
+            return Gene.GetRange(from, to-from);
+        }
+
+        /// <summary>
         /// Iterate each gene
         /// </summary>
         /// <returns></returns>
         public IEnumerable<int> GetEachGene()
         {
-            foreach(bool gene in Gene)
+            foreach (bool gene in Gene)
             {
                 yield return gene == false ? 0 : 1;
             }
