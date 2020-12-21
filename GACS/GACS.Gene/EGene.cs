@@ -6,8 +6,8 @@ namespace GACS.GACS.Gene
     /// <summary>
     /// The list of gene patterns.
     /// </summary>
-    public enum GeneList
+    public enum EGene
     {
-        FixedBinaryGene = 1
+        FixedBinaryGene
     }
 }

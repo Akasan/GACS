@@ -24,7 +24,7 @@ namespace GACS.GACS.Gene
         /// <summary>
         /// Gene information
         /// </summary>
-        private List<bool> Gene;
+        private List<int> Gene;
 
         public FixedBinaryGene(int length, FixedBinaryGeneInitializeMethod initializeMethod=FixedBinaryGeneInitializeMethod.Random)
         {
@@ -32,14 +32,14 @@ namespace GACS.GACS.Gene
             InitializeGenes(initializeMethod);
         }
 
-        public FixedBinaryGene(List<bool> gene1, List<bool> gene2)
+        public FixedBinaryGene(List<int> gene1, List<int> gene2)
         {
             Length = gene1.Count + gene2.Count;
             Gene = gene1;
             Gene.AddRange(gene2);
         }
 
-        public FixedBinaryGene(List<bool> gene)
+        public FixedBinaryGene(List<int> gene)
         {
             Length = gene.Count;
             Gene = gene;
@@ -51,7 +51,7 @@ namespace GACS.GACS.Gene
         /// <param name="initializeMethod">Method for initializing</param>
         private void InitializeGenes(FixedBinaryGeneInitializeMethod initializeMethod)
         {
-            Gene = new List<bool>(Length);
+            Gene = new List<int>();
 
             switch (initializeMethod)
             {
@@ -60,19 +60,19 @@ namespace GACS.GACS.Gene
                     for (int i = 0; i < Length; i++)
                     {
                         int prob = gen.Next(100);
-                        Gene[i] = prob < 50 ? true : false;
+                        Gene.Add(prob < 50 ? 1 : 0);
                     }
                     break;
                 case FixedBinaryGeneInitializeMethod.AllZero:
                     for (int i = 0; i < Length; i++)
                     {
-                        Gene[i] = false;
+                        Gene.Add(0);
                     }
                     break;
                 case FixedBinaryGeneInitializeMethod.AllOne:
                     for (int i = 0; i < Length; i++)
                     {
-                        Gene[i] = true;
+                        Gene.Add(1);
                     }
                     break;
             }
@@ -86,14 +86,7 @@ namespace GACS.GACS.Gene
         public int this[int i]
         { 
             get {
-                if(this.Gene[i] == false)
-                {
-                    return 0;
-                }
-                else
-                {
-                    return 1;
-                }
+                return Gene[i];
             }
         }
 
@@ -103,7 +96,7 @@ namespace GACS.GACS.Gene
         /// <param name="from"></param>
         /// <param name="to"></param>
         /// <returns></returns>
-        public List<bool> GetFromTo(int from, int to)
+        public List<int> GetFromTo(int from, int to)
         {
             return Gene.GetRange(from, to-from);
         }
@@ -114,40 +107,9 @@ namespace GACS.GACS.Gene
         /// <returns></returns>
         public IEnumerable<int> GetEachGene()
         {
-            foreach (bool gene in Gene)
+            foreach (int gene in Gene)
             {
-                yield return gene == false ? 0 : 1;
-            }
-        }
-    }
-
-    public class FixedBinaryGenes
-    {
-        private List<FixedBinaryGene> Genes;
-        public int PopulationSize;
-        public int GeneSize;
-
-        public FixedBinaryGenes(int populationSize, int geneSize, FixedBinaryGeneInitializeMethod initializeMethod = FixedBinaryGeneInitializeMethod.Random)
-        {
-            PopulationSize = populationSize;
-            GeneSize = geneSize;
-            Initialize(initializeMethod);
-        }
-
-        private void Initialize(FixedBinaryGeneInitializeMethod initializeMethod)
-        {
-            Genes = new List<FixedBinaryGene>(PopulationSize);
-            for(int i=0; i<PopulationSize; i++)
-            {
-                Genes.Add(new FixedBinaryGene(GeneSize, initializeMethod));
-            }
-        }
-
-        public FixedBinaryGene this[int i]
-        {
-            get
-            {
-                return Genes[i];
+                yield return gene;
             }
         }
     }

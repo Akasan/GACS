@@ -8,12 +8,12 @@ namespace GACS.GACS.Population
     public class Indivisual {
         public dynamic Gene;
 
-        public Indivisual(int populationSize, int geneLength, GeneList gene)
+        public Indivisual(int populationSize, int geneLength, EGene gene)
         {
             switch (gene)
             {
-                case GACS.Gene.GeneList.FixedBinaryGene:
-                    Gene = new FixedBinaryGenes(populationSize, geneLength);
+                case GACS.Gene.EGene.FixedBinaryGene:
+                    Gene = new FixedBinaryGene(geneLength);
                     break;
             }
         }
@@ -24,18 +24,19 @@ namespace GACS.GACS.Population
         public int PopulationSize;
         public List<Indivisual> Indivisual;
 
-        public Population(int populationSize, GeneList gene)
+        public Population(int populationSize, EGene gene, int geneLength)
         {
             PopulationSize = populationSize;
-            InitializePopulation(gene);
+            InitializePopulation(gene, geneLength);
         }
 
-        private void InitializePopulation(GeneList gene)
+        private void InitializePopulation(EGene gene, int geneLength)
         {
             this.Indivisual = new List<Indivisual>();
+
             for (int i=0; i< PopulationSize; i++)
             {
-                this.Indivisual.Add(new Indivisual(PopulationSize, 10, gene));
+                this.Indivisual.Add(new Indivisual(PopulationSize, geneLength, gene));
             }
         }
 
